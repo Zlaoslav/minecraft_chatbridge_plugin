@@ -1,6 +1,6 @@
-package me.example.chatbridge.minecraft;
+package me.slavi.chatbridge.minecraft;
 
-import me.example.chatbridge.discord.DiscordBot;
+import me.slavi.chatbridge.discord.DiscordBot;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

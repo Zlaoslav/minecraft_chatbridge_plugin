@@ -1,55 +1,53 @@
-package me.example.chatbridge.minecraft;
+package me.slavi.chatbridge.minecraft;
 
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.example.chatbridge.discord.DiscordBot;
+import me.slavi.chatbridge.discord.DiscordBot;
+import me.slavi.chatbridge.util.Filter;
 
-
-import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
 
     private final JavaPlugin plugin;
     private final long discordChannelId;
 
-    private static final int MINECRAFT_MAX_LENGTH = 255;
-    private static final Pattern MENTION_PATTERN = Pattern.compile("@everyone|@here|<@!?\\d+>|<@&\\d+>");
-
     public ChatListener(JavaPlugin plugin, long discordChannelId) {
         this.plugin = plugin;
         this.discordChannelId = discordChannelId;
     }
 
-    // --- Minecraft чат в Discord ---
-    @EventHandler
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        String playerName = event.getPlayer().getName();
+
+        String format = event.getFormat();
+        if (format != null && format.contains("[L]")) {
+            return; // Локальный чат - не отправляем в Discord
+        }
+        int totalOnline = org.bukkit.Bukkit.getOnlinePlayers().size();
+        int recipients = event.getRecipients().size();
+        if (recipients < totalOnline) {
+            return; // Локальный чат - не отправляем в Discord
+        }
+
+        // Если прошли обе проверки - это глобальный чат
+        Player player = event.getPlayer();
+        String playerName = player.getName();
         String message = event.getMessage();
 
-        // Фильтруем пинги
-        message = MENTION_PATTERN.matcher(message).replaceAll("[ping]");
+        message = Filter.RemoveMentions(message);
+        message = Filter.RemoveMarkdownSpecials(message);
 
-        // Обрезаем под лимит Minecraft
-        if (message.length() > MINECRAFT_MAX_LENGTH) {
-            message = message.substring(0, MINECRAFT_MAX_LENGTH - 3) + "...";
-        }
         String prefix = "";
-        if ("orkenkrutoi".equals(playerName)) {
-            prefix = "__[Admin]__";
-        }
-        if ("orkenkrutoi".equals(playerName)) {
-            prefix = "__[Admin]__";
-        }
-        if ("orkenkrutoi".equals(playerName)) {
-            prefix = "~~[Admin]~~";
-        }
-        if ("orkenkrutoi".equals(playerName)) {
-            prefix = "~~[Admin]~~";
+        if (player.isOp()) {
+            prefix = "**[Admin]** ";
         }
         // Отправляем в Discord
         DiscordBot.sendMessage(discordChannelId, prefix + "[" + playerName + "] " + message);

@@ -1,10 +1,10 @@
-package me.example.chatbridge;
+package me.slavi.chatbridge;
 
-import me.example.chatbridge.discord.DiscordBot;
-import me.example.chatbridge.discord.DiscordMessageListener;
-import me.example.chatbridge.minecraft.ChatListener;
-import me.example.chatbridge.minecraft.DeathListener;
-import me.example.chatbridge.minecraft.DeathLightningListener;
+import me.slavi.chatbridge.discord.DiscordBot;
+import me.slavi.chatbridge.discord.DiscordMessageListener;
+import me.slavi.chatbridge.minecraft.ChatListener;
+import me.slavi.chatbridge.minecraft.DeathListener;
+import me.slavi.chatbridge.minecraft.DeathLightningListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ChatBridgePlugin extends JavaPlugin {
@@ -48,9 +48,7 @@ public final class ChatBridgePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (DiscordBot.getJda() != null) {
-            DiscordBot.getJda().shutdownNow();
-        }
+        DiscordBot.shutdown();
     }
 
     public static ChatBridgePlugin getInstance() {

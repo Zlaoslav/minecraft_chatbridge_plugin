@@ -1,4 +1,4 @@
-package me.example.chatbridge.minecraft;
+package me.slavi.chatbridge.minecraft;
 
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;

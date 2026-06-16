@@ -1,8 +1,13 @@
-package me.example.chatbridge.discord;
+package me.slavi.chatbridge.discord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.managers.Presence;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.EnumSet;
@@ -27,8 +32,22 @@ public final class DiscordBot {
         );
 
         jda = JDABuilder.createLight(token, intents).build();
+        Presence presence = jda.getPresence();
+        presence.setStatus(OnlineStatus.ONLINE);
+        
+        Bukkit.getScheduler().runTaskTimer(
+            plugin,
+            () -> {
+                int online = Bukkit.getOnlinePlayers().size();
 
-        plugin.getLogger().info("Discord bot starting...");
+                jda.getPresence().setActivity(
+                        Activity.playing(online + "Online on " + plugin.getConfig().getString("server_ip", "localhost"))
+                );
+            },
+            0L,      // первая проверка сразу
+            1200L    // каждые 60 секунд
+    );
+
     }
 
     public static JDA getJda() {
@@ -42,5 +61,16 @@ public final class DiscordBot {
         if (channel != null) {
             channel.sendMessage(message).queue();
         }
+    }
+    
+    public static void shutdown() {
+        if (jda != null) {
+            Presence presense = jda.getPresence();
+            presense.setStatus(OnlineStatus.OFFLINE);
+            presense.setActivity(null);
+            jda.shutdown();
+
+        }
+        
     }
 }

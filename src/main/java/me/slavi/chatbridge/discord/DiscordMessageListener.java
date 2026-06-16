@@ -1,21 +1,18 @@
-package me.example.chatbridge.discord;
+package me.slavi.chatbridge.discord;
 
-import me.example.chatbridge.util.DiscordMentionFilter;
-import me.example.chatbridge.util.MessageLimiter;
+import me.slavi.chatbridge.util.Filter;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.regex.Pattern;
 
 public class DiscordMessageListener extends ListenerAdapter {
 
     private final JavaPlugin plugin;
     private final long discordChannelId;
-    private static final int MINECRAFT_MAX_LENGTH = 230;
-    private static final Pattern MENTION_PATTERN = Pattern.compile("@everyone|@here|<@!?\\d+>|<@&\\d+>");
 
     public DiscordMessageListener(JavaPlugin plugin, long discordChannelId) {
         this.plugin = plugin;
@@ -41,8 +38,8 @@ public class DiscordMessageListener extends ListenerAdapter {
         }
 
         // Фильтруем пинги и лимитируем
-        content = DiscordMentionFilter.sanitize(content);
-        content = MessageLimiter.limitForMinecraft(content);
+        content = Filter.RemoveMentions(content);
+        content = Filter.LimitForMinecraft(content);
 
         String prefix = "§7[Discord] ";
         // Пример кастомного префикса для админа — можно перенести в конфиг
@@ -56,5 +53,8 @@ public class DiscordMessageListener extends ListenerAdapter {
 
         // Обязательно отправляем на основном потоке сервера
         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.broadcastMessage(finalMessage));
+
+        
+
     }
 }
