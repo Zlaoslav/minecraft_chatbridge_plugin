@@ -1,0 +1,1 @@
+# minecraft_chatbridge_plugin
