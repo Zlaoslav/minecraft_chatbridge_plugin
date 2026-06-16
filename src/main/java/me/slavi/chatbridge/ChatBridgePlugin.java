@@ -43,7 +43,7 @@ public final class ChatBridgePlugin extends JavaPlugin {
             getLogger().warning("JDA не инициализирован — Discord сообщения не будут обрабатываться");
         }
 
-        getLogger().info("ChatBridge включён");
+        getLogger().info("ChatBridge Online!");
     }
 
     @Override

@@ -41,7 +41,7 @@ public final class DiscordBot {
                 int online = Bukkit.getOnlinePlayers().size();
 
                 jda.getPresence().setActivity(
-                        Activity.playing(online + "Online on " + plugin.getConfig().getString("server_ip", "localhost"))
+                        Activity.playing(online + " Online on " + plugin.getConfig().getString("server_ip", "localhost"))
                 );
             },
             0L,      // первая проверка сразу
