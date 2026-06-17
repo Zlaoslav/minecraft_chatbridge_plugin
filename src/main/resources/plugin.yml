@@ -1,6 +1,6 @@
 name: ChatBridge
 main: me.slavi.chatbridge.ChatBridgePlugin
-version: 1.5.0
+version: 1.5.2
 api-version: 1.21
 author: slavi
 description: Discord ↔ Minecraft chat bridge

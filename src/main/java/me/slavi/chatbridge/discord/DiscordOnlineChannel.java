@@ -11,7 +11,7 @@ public class DiscordOnlineChannel {
             return;
         }
 
-        long channelId = plugin.getConfig().getLong("discord.online_channel_id", 0L);
+        long channelId = plugin.getConfig().getLong("discord.channel-online-id", 0L);
         if (channelId <= 0) {
             return;
         }
@@ -35,7 +35,7 @@ public class DiscordOnlineChannel {
     }
        
     public static void shutdown(JavaPlugin plugin, JDA jda) {
-        long channelId = plugin.getConfig().getLong("discord.online_channel_id", 0L);
+        long channelId = plugin.getConfig().getLong("discord.channel-online-id", 0L);
         if (channelId <= 0) {
             return;
         }
