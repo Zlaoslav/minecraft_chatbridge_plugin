@@ -48,7 +48,7 @@ public final class ChatBridgePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        DiscordBot.shutdown();
+        DiscordBot.shutdown(this);
     }
 
     public static ChatBridgePlugin getInstance() {

@@ -64,11 +64,13 @@ public final class DiscordBot {
         }
     }
     
-    public static void shutdown() {
+    public static void shutdown(JavaPlugin plugin) {
         if (jda != null) {
             Presence presence = jda.getPresence();
             presence.setStatus(OnlineStatus.OFFLINE);
             presence.setActivity(null);
+            DiscordOnlineChannel.shutdown(plugin, jda);
+
             jda.shutdown();
         }
         
