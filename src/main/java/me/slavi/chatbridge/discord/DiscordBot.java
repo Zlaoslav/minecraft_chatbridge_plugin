@@ -43,6 +43,7 @@ public final class DiscordBot {
                 jda.getPresence().setActivity(
                         Activity.playing(online + " Online on " + plugin.getConfig().getString("server_ip", "localhost"))
                 );
+                DiscordOnlineChannel.updateOnlineChannel(plugin, online);
             },
             0L,      // первая проверка сразу
             1200L    // каждые 60 секунд
@@ -65,11 +66,10 @@ public final class DiscordBot {
     
     public static void shutdown() {
         if (jda != null) {
-            Presence presense = jda.getPresence();
-            presense.setStatus(OnlineStatus.OFFLINE);
-            presense.setActivity(null);
+            Presence presence = jda.getPresence();
+            presence.setStatus(OnlineStatus.OFFLINE);
+            presence.setActivity(null);
             jda.shutdown();
-
         }
         
     }

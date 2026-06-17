@@ -44,7 +44,8 @@ public class ChatListener implements Listener {
 
         message = Filter.RemoveMentions(message);
         message = Filter.RemoveMarkdownSpecials(message);
-
+        playerName = Filter.RemoveMarkdownSpecials(playerName);
+        
         String prefix = "";
         if (player.isOp()) {
             prefix = "**[Admin]** ";

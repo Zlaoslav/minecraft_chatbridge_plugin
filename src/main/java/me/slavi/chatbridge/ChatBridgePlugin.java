@@ -17,19 +17,19 @@ public final class ChatBridgePlugin extends JavaPlugin {
 
         saveDefaultConfig();
 
-        long channelId = getConfig().getLong("discord.channel-id");
+        long ChatChannelId = getConfig().getLong("discord.channel-chat-id");
 
         // Запускаем Discord (инициализирует JDA)
         DiscordBot.start(this);
 
         // Регистрация Minecraft listeners
         getServer().getPluginManager().registerEvents(
-                new ChatListener(this, channelId), this
+                new ChatListener(this, ChatChannelId), this
         );
 
         // Listener смерти (Discord / чат)
         getServer().getPluginManager().registerEvents(
-                new DeathListener(this, channelId), this
+                new DeathListener(this, ChatChannelId), this
         );
 
         // Listener молнии + координат
@@ -38,7 +38,7 @@ public final class ChatBridgePlugin extends JavaPlugin {
         );
         // Регистрируем JDA listener (Discord -> Minecraft)
         if (DiscordBot.getJda() != null) {
-            DiscordBot.getJda().addEventListener(new DiscordMessageListener(this, channelId));
+            DiscordBot.getJda().addEventListener(new DiscordMessageListener(this, ChatChannelId));
         } else {
             getLogger().warning("JDA не инициализирован — Discord сообщения не будут обрабатываться");
         }
