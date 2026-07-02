@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.slavi.chatbridge.discord.DiscordBot;
 import me.slavi.chatbridge.util.Filter;
+import net.dv8tion.jda.api.JDA;
 
 
 public class ChatListener implements Listener {
@@ -66,5 +67,13 @@ public class ChatListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
         DiscordBot.sendMessage(discordChannelId, "```diff\n- " + playerName + " вышел из игры\n```");
+    }
+
+    public static void shutdown(JavaPlugin plugin, JDA jda) {
+        DiscordBot.sendMessage(plugin.getConfig().getLong("discord.channelId"), "# Сервер остановлен!");
+    }
+    
+    public static void startup(JavaPlugin plugin, JDA jda) {
+        DiscordBot.sendMessage(plugin.getConfig().getLong("discord.channelId"), "# Сервер запущен!");
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.EnumSet;
+import me.slavi.chatbridge.minecraft.ChatListener;
 
 public final class DiscordBot {
 
@@ -34,6 +35,7 @@ public final class DiscordBot {
         jda = JDABuilder.createLight(token, intents).build();
         Presence presence = jda.getPresence();
         presence.setStatus(OnlineStatus.ONLINE);
+        ChatListener.startup(plugin, jda);
         
         Bukkit.getScheduler().runTaskTimer(
             plugin,
@@ -70,6 +72,7 @@ public final class DiscordBot {
             presence.setStatus(OnlineStatus.OFFLINE);
             presence.setActivity(null);
             DiscordOnlineChannel.shutdown(plugin, jda);
+            ChatListener.shutdown(plugin, jda);
 
             jda.shutdown();
         }
